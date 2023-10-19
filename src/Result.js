@@ -2,9 +2,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, Image, TouchableOpacity} from 'react-native';
 
-export default class App extends Component {
-
-  render(){
+export const ResultScreen = ({ varResult, varAlcohol, varGas, close }) => {
     return (
         <View style={styles.container}>
             
@@ -13,21 +11,20 @@ export default class App extends Component {
             style={styles.gasImage}
             />
             
-            <Text style={styles.title}>Compensa usar {this.props.varResult} </Text>
+            <Text style={styles.title}>Compensa usar {varResult} </Text>
         
             <View style={styles.prices}>
                 <Text style={{color:'#FFF', fontSize: 28, fontWeight: 'bold'}}>Com os preços: </Text>
-                <Text style={{color:'#FFF', fontSize: 18}}>Álcool: R$ {this.props.varAlcohol}</Text>
-                <Text style={{color:'#FFF', fontSize: 18}}>Gasolina: R$ {this.props.varGas}</Text>
+                <Text style={{color:'#FFF', fontSize: 18}}>Álcool: R$ {varAlcohol}</Text>
+                <Text style={{color:'#FFF', fontSize: 18}}>Gasolina: R$ {varGas}</Text>
             </View>
 
-            <TouchableOpacity style={styles.button} onPress={this.props.close}>
+            <TouchableOpacity style={styles.button} onPress={close}>
                 <Text style={styles.buttonText}>Calcular novamente</Text>
             </TouchableOpacity>
         </View>
     );
-  }
-}
+};
 
 const styles = StyleSheet.create({
     container:{

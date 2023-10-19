@@ -1,45 +1,34 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput ,View, Image, TouchableOpacity, Modal } from 'react-native';
-import Result from './src/Result';
+import { ResultScreen } from './src/Result';
 
-export default class App extends Component  {
+export default function App() {
 
-  constructor(props){
-    super(props);
-    this.state={
-      modalVisible: false,
-      gas: '',
-      alcohol: '',
-      result: '',
+  const [modalVisible, setModalVisible] = useState(false);
+  const [gas, setGas] = useState('');
+  const [alcohol, setAlcohol] = useState('');
+  const [result, setResult] = useState('');
 
-    };
 
-    this.calculate = this.calculate.bind(this);
-    this.close = this.close.bind(this);
-  }
+  const close = (visible) => {
+    setModalVisible(visible);
+  };
 
-  close (visible){
-    this.setState({modalVisible: visible});
-  }
-
-  calculate(){
-    if(this.state.gas && this.state.alcohol){
-      if((this.state.alcohol / this.state.gas) < 0.7){
-        this.setState({result: 'Álcool'})
+  const calculate = () => {
+    if(gas && alcohol){
+      if((alcohol / gas) < 0.7){
+        setResult('Álcool');
       }else{
-        this.setState({result: 'Gasolina'})
+        setResult('Gasolina');
       }
-      console.log(this.state.result)
-      this.setState({modalVisible: true});
+      setModalVisible(true);
     }else{
       alert('Preencha todos os campos')
     }
+  };
 
-  }
-
-  render(){
-    return (
+  return (
       <View style={styles.container}>
         <StatusBar style="auto" />
 
@@ -57,35 +46,34 @@ export default class App extends Component  {
             multiline
             numberOfLines={1}
             style={styles.input}
-            onChangeText={(text) => this.setState({alcohol: text})}
+            onChangeText={(text) => setAlcohol(text)}
           />
           
           <Text style={styles.label}>Gasolina(preço por litro):</Text>
           <TextInput
             keyboardType="numeric"
             style={styles.input}
-            onChangeText={(text) => this.setState({gas: text})}
+            onChangeText={(text) => setGas(text)}
           />
 
-          <TouchableOpacity style={styles.button} onPress={this.calculate}>
+          <TouchableOpacity style={styles.button} onPress={calculate}>
             <Text style={styles.buttonText}>Calcular</Text>  
           </TouchableOpacity>
 
         </View>
 
-        <Modal transparent={true} animationType='fade' visible={this.state.modalVisible}>
-          <Result 
-            close={() => this.close(false)} 
-            varResult= {this.state.result} 
-            varGas= {this.state.gas} 
-            varAlcohol= {this.state.alcohol} 
+        <Modal transparent={true} animationType='fade' visible={modalVisible}>
+          <ResultScreen 
+            close={() => close(false)} 
+            varResult= {result} 
+            varGas= {gas} 
+            varAlcohol= {alcohol} 
           />
         </Modal>
 
       </View>
     );
-  }
-}
+  };
 
 const styles = StyleSheet.create({
   container: {
